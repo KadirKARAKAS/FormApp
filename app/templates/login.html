@@ -1,8 +1,8 @@
 <style>
         :root {
-            --background: #1a1a2e;
-            --color: #ffffff;
-            --primary-color: #0f3460;
+            --background: #231F20;
+            --color: #fff;
+            --primary-color: #BB4430 ;
         }
 
         * {
@@ -177,6 +177,7 @@
             <img src="https://raw.githubusercontent.com/hicodersofficial/glassmorphism-login-form/master/assets/illustration.png" alt="illustration" class="illustration" />
             <h1 class="opacity">LOGIN</h1>
             <form action="" method="post" novalidate>
+                {{ form.hidden_tag() }} <!-- hidden_tag() fonksiyonunu formun içine almamalısınız -->
                 <input type="text" name="username" placeholder="USERNAME" value="{{ form.username.data }}" />
                 {% for error in form.username.errors %}
                     <span style="color: red;">[{{ error }}]</span>
@@ -196,9 +197,13 @@
     </div>
     <div class="theme-btn-container"></div>
 </section>
-
 <script>
     const themes = [
+        {
+            background: "#231F20",
+            color: "#FFF",
+            primaryColor: "#BB4430"
+        },
         {
             background: "#1A1A2E",
             color: "#FFFFFF",
@@ -224,11 +229,7 @@
             color: "#000000",
             primaryColor: "#642B36"
         },
-        {
-            background: "#231F20",
-            color: "#FFF",
-            primaryColor: "#BB4430"
-        }
+        
     ];
 
     const setTheme = (theme) => {
