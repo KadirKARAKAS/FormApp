@@ -39,7 +39,10 @@ class User(UserMixin, db.Model):
         secondary=followers, primaryjoin=(followers.c.followed_id == id),
         secondaryjoin=(followers.c.follower_id == id),
         back_populates='following')
+    role: so.Mapped[str] = so.mapped_column(sa.String(20), default='user')
 
+    def has_role(self, role_name):
+        return self.role == role_name or self.role == 'admin'
     def __repr__(self):
         return '<User {}>'.format(self.username)
 

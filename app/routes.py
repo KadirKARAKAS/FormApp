@@ -7,6 +7,8 @@ from app import app, db
 from app.forms import LoginForm, RegistrationForm, EditProfileForm, \
     EmptyForm, PostForm
 from app.models import User, Post
+from functools import wraps
+
 
 
 @app.before_request
@@ -169,3 +171,23 @@ def unfollow(username):
         return redirect(url_for('user', username=username))
     else:
         return redirect(url_for('index'))
+
+
+def role_required(role_name):
+    def decorator(view_func):
+        @wraps(view_func)
+        def wrapper(*args, **kwargs):
+            if not current_user.is_authenticated:
+                return redirect(url_for('login'))
+            if not current_user.has_role(role_name):
+                flash('Bu sayfaya erişim izniniz yok!', 'warning')
+                return redirect(url_for('index'))
+            return view_func(*args, **kwargs)
+        return wrapper
+    return decorator
+
+@app.route('/admin_panel')
+@login_required
+@role_required('admin')
+def admin_panel():
+    return render_template('admin_panel.html')
